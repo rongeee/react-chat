@@ -1,14 +1,17 @@
 import React from "react";
 import { useRef, useContext } from "react";
+import { ChatContext } from "../contexts/ChatContext";
 
 
 export default function ChatInput({ handlePostMessage }) {
   const messageInputField = useRef();
+  const setChatRoom = useContext(ChatContext).setChatRoom;
 
   const handleOnClick = () => {
     const msg = messageInputField.current.value;
     handlePostMessage(msg);
     messageInputField.current.value = "";
+    setChatRoom('')
   };
 
   const enterSend = (event) => {

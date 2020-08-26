@@ -17,9 +17,7 @@ export default function Main() {
     });
   };
 
-  setInterval(() => {
-    handleGetChatRoom();
-  }, 1000);
+
   
   
   useEffect(() => {
@@ -29,7 +27,7 @@ export default function Main() {
 
     return (
         <div>
-          <ChatContext.Provider value={{chatRoom: chatRoom, handleGetChatRoom: handleGetChatRoom}}>
+          <ChatContext.Provider value={{chatRoom: chatRoom, handleGetChatRoom: handleGetChatRoom, setChatRoom: setChatRoom}}>
             <ChatRoom />
           </ChatContext.Provider>
         </div>
