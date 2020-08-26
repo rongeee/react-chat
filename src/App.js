@@ -1,11 +1,13 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import ChatRoom from "./components/ChatRoom";
+import Main from "./components/Main";
+
+
 
 function App() {
   return (
     <div>
-      <ChatRoom />
+        <Main />
     </div>
   );
 }

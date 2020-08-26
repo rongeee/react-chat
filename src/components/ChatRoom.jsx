@@ -1,18 +1,30 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useRef, useContext } from "react";
 import ChatInput from "./ChatInput";
 import Messages from "./Messages";
+import Header from "./Header";
+import { ChatContext } from "../contexts/ChatContext";
 
 export default function ChatRoom() {
-  const CHAT_ROOM_URL =
-    "https://mock-data-api.firebaseio.com/chatrooms/-MFZumveIpHH5D_gkUHJ.json";
+    
+  let [username, setUsername] = useState(null);
+  
+  const chatRoom = useContext(ChatContext).chatRoom;
+  const updateChat = useContext(ChatContext).handleGetChatRoom;
+
+  const usernameInput = useRef();
+
   const MESSAGE_LIST_URL =
-    "https://mock-data-api.firebaseio.com/chatrooms/-MFZumveIpHH5D_gkUHJ/messages.json";
-  let [chatRoom, setChatRoom] = useState({});
+  "https://mock-data-api.firebaseio.com/chatrooms/-MFZumveIpHH5D_gkUHJ/messages.json";
 
   const handlePostMessage = (message) => {
+    let today = new Date();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
     const data = {
       message: message,
+      username: username,
+      time: time,
     };
     const url = MESSAGE_LIST_URL;
 
@@ -22,37 +34,50 @@ export default function ChatRoom() {
     })
       .then((res) => res.json())
       .then((data) => {
-        handleGetChatRoom(CHAT_ROOM_URL);
+        console.log(data);
+        updateChat();
       });
   };
 
-  const handleGetChatRoom = (url) => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setChatRoom(data);
-      });
-  };
+  const renderChatRoom = () => {
+    return(
+      <div>
+        <Header heading={chatRoom.name} />
+        <p>Your username is {username}</p>
+        <ChatInput handlePostMessage={handlePostMessage} />
+        {chatRoom.messages && <Messages />}
+      </div>
+    )
+  }
 
-  useEffect(() => {
-    handleGetChatRoom(CHAT_ROOM_URL);
-  }, []);
+  const enterSend = (event) => {
+    if (event.key === 'Enter') {
+      setUsername(usernameInput.current.value)
+    }
+  }
+
+  const renderUsernameForm = () => {
+    return (
+      <div>
+        <p>Please enter username</p>
+        <input ref={usernameInput} type="text" onKeyPress={enterSend} autoFocus/>
+        <button onClick={() => setUsername(usernameInput.current.value)}>Save Username</button>
+      </div>
+    )
+  }
+
 
   return (
-    <div>
-      <h1>{chatRoom.name}</h1>
+    <div className="container">
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
 
-      <ChatInput handlePostMessage={handlePostMessage} />
+          {username ? renderChatRoom() : renderUsernameForm()}
 
-      {chatRoom.messages &&
-        Object.entries(chatRoom.messages)
-          .reverse()
-          .map((item) => {
-            const key = item[0];
-            const payload = item[1];
-            console.log(payload);
-            return <Messages key={key} payload={payload} />;
-          })}
+          {/* <ChatInput handlePostMessage={handlePostMessage} />
+          {chatRoom.messages && <Messages messages={chatRoom.messages} />} */}
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import React from "react";
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 
-export default function ChatInput({ msgURL, handlePostMessage }) {
+
+export default function ChatInput({ handlePostMessage }) {
   const messageInputField = useRef();
 
   const handleOnClick = () => {
@@ -10,11 +11,18 @@ export default function ChatInput({ msgURL, handlePostMessage }) {
     messageInputField.current.value = "";
   };
 
+  const enterSend = (event) => {
+    if (event.key === 'Enter') {
+      handleOnClick();
+    }
+  }
+
+
   return (
-    <div>
-      <div>
-        <input type="text" ref={messageInputField} />
-        <button onClick={handleOnClick}>Send</button>
+    <div className="form">
+      <div className="form-group mb-2">
+        <input type="text" ref={messageInputField} className="form-control" placeholder="Enter message..." onKeyPress={enterSend} autoFocus />
+        <button onClick={handleOnClick} className="btn btn-primary btn-block mb-2">Send</button>
       </div>
     </div>
   );
