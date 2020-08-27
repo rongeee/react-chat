@@ -3,7 +3,7 @@ import FadeIn from "react-fade-in";
 
 export default function Msg({ username, msg, time }) {
   return (
-    <FadeIn delay={100} transitionDuration={500}>
+    <FadeIn delay={100} transitionDuration={300}>
       <li className="list-group-item">
         <p>
           {typeof msg === "string" ? (

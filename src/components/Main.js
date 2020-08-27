@@ -1,17 +1,25 @@
 import React from "react";
-import ChatRoom from "./ChatRoom";
 import { useState, useEffect } from "react";
 import { ChatContext } from "../contexts/ChatContext";
 import LayoutSimple from "./LayoutSimple";
+import UsernameForm from "./UsernameForm";
+import FadeIn from "react-fade-in";
 
 export default function Main() {
   let [chatRoom, setChatRoom] = useState({});
   let [chatRooms, setChatRooms] = useState({});
   let [urlKey, setUrlKey] = useState();
+  let [username, setUsername] = useState(null);
 
   const handleGetChatRoom = (key) => {
-    const CHAT_ROOM_URL = `https://mock-data-api.firebaseio.com/chatrooms/${key}.json`;
-    const url = CHAT_ROOM_URL;
+    let url;
+    if (key) {
+      url = `https://mock-data-api.firebaseio.com/chatrooms/${key}.json`;
+    } else {
+      url = `https://mock-data-api.firebaseio.com/chatrooms/-MFZumveIpHH5D_gkUHJ.json`;
+      setUrlKey("-MFZumveIpHH5D_gkUHJ");
+    }
+
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -32,7 +40,6 @@ export default function Main() {
 
   useEffect(() => {
     getChatRooms();
-    handleGetChatRoom("-MFZumveIpHH5D_gkUHJ");
   }, []);
 
   return (
@@ -46,9 +53,13 @@ export default function Main() {
           urlKey,
           handleGetChatRoom,
           chatRoom,
+          username,
+          setUsername,
         }}
       >
-        <LayoutSimple />
+        <FadeIn delay={100} transitionDuration={300}>
+          {username ? <LayoutSimple /> : <UsernameForm />}
+        </FadeIn>
       </ChatContext.Provider>
     </div>
   );

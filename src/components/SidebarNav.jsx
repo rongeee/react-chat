@@ -1,11 +1,12 @@
 import React from "react";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { ChatContext } from "../contexts/ChatContext";
 
 export default function SidebarNav() {
   const chatRooms = useContext(ChatContext).chatRooms;
   const getRoom = useContext(ChatContext).handleGetChatRoom;
   const setUrlKey = useContext(ChatContext).setUrlKey;
+  const username = useContext(ChatContext).username;
   console.log(chatRooms);
 
   const updateActiveNavItem = (event) => {
@@ -32,27 +33,29 @@ export default function SidebarNav() {
     <div className="col-md-2">
       <nav className="d-none d-md-block bg-light sidebar">
         <div className="sidebar-sticky">
-          {Object.entries(chatRooms).map((room) => {
-            const key = room[0];
-            const payload = room[1];
-            console.log(key);
+          <ul className="nav flex-column">
+            {username &&
+              Object.entries(chatRooms).map((room) => {
+                const key = room[0];
+                const payload = room[1];
 
-            return (
-              <ul className="nav flex-column">
-                {payload.name && (
-                  <li
-                    className="nav-item nav-link list-group-item d-flex justify-content-between align-items-center"
-                    style={{ cursor: "pointer" }}
-                    data={key}
-                    key={key}
-                    onClick={handleClickRoom}
-                  >
-                    {payload.name}
-                  </li>
-                )}
-              </ul>
-            );
-          })}
+                return (
+                  <>
+                    {payload.name && (
+                      <li
+                        className="nav-item nav-link list-group-item d-flex justify-content-between align-items-center"
+                        style={{ cursor: "pointer" }}
+                        data={key}
+                        key={key}
+                        onClick={handleClickRoom}
+                      >
+                        {payload.name}
+                      </li>
+                    )}
+                  </>
+                );
+              })}
+          </ul>
         </div>
       </nav>
     </div>

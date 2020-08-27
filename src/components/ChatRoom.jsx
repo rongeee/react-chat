@@ -1,20 +1,17 @@
 import React from "react";
-import { useState, useRef, useContext } from "react";
+import { useContext } from "react";
 import ChatInput from "./ChatInput";
 import Messages from "./Messages";
 import Header from "./Header";
 import { ChatContext } from "../contexts/ChatContext";
 
 export default function ChatRoom() {
-  let [username, setUsername] = useState(null);
-
   const chatRoom = useContext(ChatContext).chatRoom;
   const updateChat = useContext(ChatContext).handleGetChatRoom;
   const urlKey = useContext(ChatContext).urlKey;
+  const username = useContext(ChatContext).username;
 
   console.log(chatRoom);
-
-  const usernameInput = useRef();
 
   const MESSAGE_LIST_URL = `https://mock-data-api.firebaseio.com/chatrooms/${urlKey}/messages.json`;
 
@@ -43,46 +40,15 @@ export default function ChatRoom() {
       });
   };
 
-  const renderChatRoom = () => {
-    return (
-      <div>
-        <Header heading={chatRoom.name} />
-        <p>Your username is {username}</p>
-
-        <ChatInput handlePostMessage={handlePostMessage} />
-        {chatRoom.messages && <Messages />}
-      </div>
-    );
-  };
-
-  const enterSend = (event) => {
-    if (event.key === "Enter") {
-      setUsername(usernameInput.current.value);
-    }
-  };
-
-  const renderUsernameForm = () => {
-    return (
-      <div>
-        <p>Please enter username</p>
-        <input
-          ref={usernameInput}
-          type="text"
-          onKeyPress={enterSend}
-          autoFocus
-        />
-        <button onClick={() => setUsername(usernameInput.current.value)}>
-          Save Username
-        </button>
-      </div>
-    );
-  };
-
   return (
     <div className="container">
       <div className="row">
         <div className="col-md-6 offset-md-3">
-          {username ? renderChatRoom() : renderUsernameForm()}
+          <Header heading={chatRoom.name} />
+          <p>Your username is {username}</p>
+
+          <ChatInput handlePostMessage={handlePostMessage} />
+          <Messages />
         </div>
       </div>
     </div>

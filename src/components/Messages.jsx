@@ -14,7 +14,7 @@ export default function Messages() {
           .map((item) => {
             const key = item[0];
             const payload = item[1];
-            console.log(payload);
+
             let username = payload.username;
             if (payload.userName) username = payload.userName;
             return (

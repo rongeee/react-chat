@@ -1,10 +1,8 @@
 import React from "react";
-import { useRef, useContext } from "react";
-import { ChatContext } from "../contexts/ChatContext";
+import { useRef } from "react";
 
 export default function ChatInput({ handlePostMessage }) {
   const messageInputField = useRef();
-  const setChatRoom = useContext(ChatContext).setChatRoom;
 
   const handleOnClick = () => {
     const msg = messageInputField.current.value;
