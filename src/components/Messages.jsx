@@ -1,6 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import { ChatContext } from "../contexts/ChatContext";
+import Msg from "./Msg";
 
 export default function Messages() {
   const messages = useContext(ChatContext).chatRoom.messages;
@@ -17,23 +18,12 @@ export default function Messages() {
             let username = payload.username;
             if (payload.userName) username = payload.userName;
             return (
-              <li className="list-group-item" key={key}>
-                <p>
-                  {typeof payload.message === "string" ? (
-                    payload.message
-                  ) : (
-                    <span className="error-msg" style={{ color: "red" }}>
-                      Cannot display message.
-                    </span>
-                  )}
-                </p>
-                {
-                  <div className="d-flex justify-content-between">
-                    <small>By: {username ? username : "Guest"}</small>
-                    <small>{payload.time}</small>
-                  </div>
-                }
-              </li>
+              <Msg
+                key={key}
+                username={username}
+                msg={payload.message}
+                time={payload.time}
+              />
             );
           })}
     </ul>

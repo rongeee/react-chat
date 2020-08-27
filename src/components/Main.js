@@ -7,7 +7,7 @@ import LayoutSimple from "./LayoutSimple";
 export default function Main() {
   let [chatRoom, setChatRoom] = useState({});
   let [chatRooms, setChatRooms] = useState({});
-  let [urlKey, setUrlKey] = useState({});
+  let [urlKey, setUrlKey] = useState();
 
   const handleGetChatRoom = (key) => {
     const CHAT_ROOM_URL = `https://mock-data-api.firebaseio.com/chatrooms/${key}.json`;
@@ -32,6 +32,7 @@ export default function Main() {
 
   useEffect(() => {
     getChatRooms();
+    handleGetChatRoom("-MFZumveIpHH5D_gkUHJ");
   }, []);
 
   return (

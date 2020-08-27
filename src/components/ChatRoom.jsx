@@ -48,6 +48,7 @@ export default function ChatRoom() {
       <div>
         <Header heading={chatRoom.name} />
         <p>Your username is {username}</p>
+
         <ChatInput handlePostMessage={handlePostMessage} />
         {chatRoom.messages && <Messages />}
       </div>
@@ -82,8 +83,6 @@ export default function ChatRoom() {
       <div className="row">
         <div className="col-md-6 offset-md-3">
           {username ? renderChatRoom() : renderUsernameForm()}
-          {/* <ChatInput handlePostMessage={handlePostMessage} />
-          {chatRoom.messages && <Messages messages={chatRoom.messages} />} */}
         </div>
       </div>
     </div>
