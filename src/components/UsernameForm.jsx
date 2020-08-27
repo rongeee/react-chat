@@ -17,6 +17,7 @@ export default function UsernameForm() {
   const enterSend = (event) => {
     if (event.key === "Enter") {
       setUsername(usernameInput.current.value);
+      getChat();
     }
   };
 
