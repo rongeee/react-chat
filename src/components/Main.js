@@ -2,35 +2,52 @@ import React from "react";
 import ChatRoom from "./ChatRoom";
 import { useState, useEffect } from "react";
 import { ChatContext } from "../contexts/ChatContext";
+import LayoutSimple from "./LayoutSimple";
 
 export default function Main() {
   let [chatRoom, setChatRoom] = useState({});
+  let [chatRooms, setChatRooms] = useState({});
+  let [urlKey, setUrlKey] = useState({});
 
-  const handleGetChatRoom = () => {
-    const CHAT_ROOM_URL =
-      "https://mock-data-api.firebaseio.com/chatrooms/-MFZumveIpHH5D_gkUHJ.json";
+  const handleGetChatRoom = (key) => {
+    const CHAT_ROOM_URL = `https://mock-data-api.firebaseio.com/chatrooms/${key}.json`;
     const url = CHAT_ROOM_URL;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
         setChatRoom(data);
+        console.log(data);
+      });
+  };
+
+  const getChatRooms = () => {
+    const CHAT_ROOM_URL = "https://mock-data-api.firebaseio.com/chatrooms.json";
+    const url = CHAT_ROOM_URL;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setChatRooms(data);
       });
   };
 
   useEffect(() => {
-    handleGetChatRoom();
+    getChatRooms();
   }, []);
 
   return (
     <div>
       <ChatContext.Provider
         value={{
-          chatRoom: chatRoom,
-          handleGetChatRoom: handleGetChatRoom,
-          setChatRoom: setChatRoom,
+          chatRooms,
+          getChatRooms,
+          setChatRoom,
+          setUrlKey,
+          urlKey,
+          handleGetChatRoom,
+          chatRoom,
         }}
       >
-        <ChatRoom />
+        <LayoutSimple />
       </ChatContext.Provider>
     </div>
   );

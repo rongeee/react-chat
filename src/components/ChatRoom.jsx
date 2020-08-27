@@ -10,11 +10,13 @@ export default function ChatRoom() {
 
   const chatRoom = useContext(ChatContext).chatRoom;
   const updateChat = useContext(ChatContext).handleGetChatRoom;
+  const urlKey = useContext(ChatContext).urlKey;
+
+  console.log(chatRoom);
 
   const usernameInput = useRef();
 
-  const MESSAGE_LIST_URL =
-    "https://mock-data-api.firebaseio.com/chatrooms/-MFZumveIpHH5D_gkUHJ/messages.json";
+  const MESSAGE_LIST_URL = `https://mock-data-api.firebaseio.com/chatrooms/${urlKey}/messages.json`;
 
   const handlePostMessage = (message) => {
     let today = new Date();
@@ -37,7 +39,7 @@ export default function ChatRoom() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        updateChat();
+        updateChat(urlKey);
       });
   };
 
@@ -80,7 +82,6 @@ export default function ChatRoom() {
       <div className="row">
         <div className="col-md-6 offset-md-3">
           {username ? renderChatRoom() : renderUsernameForm()}
-
           {/* <ChatInput handlePostMessage={handlePostMessage} />
           {chatRoom.messages && <Messages messages={chatRoom.messages} />} */}
         </div>
